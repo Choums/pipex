@@ -6,7 +6,7 @@
 /*   By: chaidel <chaidel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/27 17:13:30 by chaidel           #+#    #+#             */
-/*   Updated: 2022/02/01 19:24:23 by chaidel          ###   ########.fr       */
+/*   Updated: 2022/02/04 10:27:54 by chaidel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ void	ft_process(char *command, char **envp)
 		ft_err("Command not found");
 	if (execve(path, cmd, envp) < 0)
 		ft_err(cmd[0]);
+	ft_double_free(cmd);
+	free(path);
 	exit(EXIT_SUCCESS);
 }
 
@@ -75,5 +77,5 @@ int	main(int ac, char **av, char **envp)
 	}
 	else
 		ft_err("Invalid number of arguments");
-	exit(EXIT_SUCCESS);
+	exit(EXIT_FAILURE);
 }

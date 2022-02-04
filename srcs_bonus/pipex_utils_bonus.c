@@ -6,7 +6,7 @@
 /*   By: chaidel <chaidel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/27 18:44:09 by chaidel           #+#    #+#             */
-/*   Updated: 2022/02/01 18:23:10 by chaidel          ###   ########.fr       */
+/*   Updated: 2022/02/04 09:58:57 by chaidel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
 	----------
 	Return -> path to the command's file
 */
-
 char	*ft_get_path(char *cmd, char **envp)
 {
 	char	*dir;
@@ -51,14 +50,13 @@ char	*ft_get_path(char *cmd, char **envp)
 }
 
 /*
-	Opens files and/or get input for here_doc and check the opening and set
-	n_arg var
+	Opens files and/or get input for here_doc and check the opening
+	and set n_arg var
 	----------
 	Case of infile -> opens infile and outfiles as usual
-	Case of here_doc -> get input via gnl and opens outfile with O_APPEND
+	Case of here_doc -> get inputs via gnl and opens outfile with O_APPEND
 						istead of O_TRUNC
 */
-
 int	ft_open_mode(t_data *pip, char **av)
 {
 	if (!ft_strcmp(av[1], "here_doc"))

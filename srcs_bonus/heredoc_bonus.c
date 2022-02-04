@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   link_management_bonus.c                            :+:      :+:    :+:   */
+/*   heredoc_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chaidel <chaidel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/27 18:59:55 by chaidel           #+#    #+#             */
-/*   Updated: 2022/02/01 18:57:50 by chaidel          ###   ########.fr       */
+/*   Updated: 2022/02/04 09:59:03 by chaidel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,13 @@ void	ft_close_pipe(t_data *pip)
 	close(pip->pipefd[1]);
 }
 
+/*
+	Copy the heredoc redirection,
+	takes multiple lines of input until the limiter is identified.
+	The function generates a pipe from which she passes all inputs
+	to the current process.
+	(Display the pipes)
+*/
 void	ft_here_doc(char **av)
 {
 	char	*line;
@@ -37,7 +44,8 @@ void	ft_here_doc(char **av)
 			new_line = ft_join(new_line, line);
 	}
 	free(line);
-	write(fd[1], new_line, ft_strlen(new_line));
+	if (write(fd[1], new_line, ft_strlen(new_line)) == -1)
+		ft_err("Write");
 	free(new_line);
 	if (dup2(fd[0], STDIN_FILENO) == -1)
 		ft_err("Dup2");
