@@ -23,9 +23,10 @@
 
 char	*ft_get_path(char *cmd, char **envp);
 void	ft_double_free(char **tab);
+void	ft_err(char *msg);
+
 void	ft_pipex(int in_fd, int out_fd, char **av, char **envp);
 void	ft_fst_process(int in_fd, int *pipefd, char *command, char **envp);
 void	ft_snd_process(int out_fd, int *pipefd, char *command, char **envp);
-void	ft_err(void);
 
 #endif

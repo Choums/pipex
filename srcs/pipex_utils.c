@@ -65,8 +65,8 @@ void	ft_double_free(char **tab)
 	free(tab);
 }
 
-void	ft_err(void)
+void	ft_err(char *msg)
 {
-	perror("Fork");
+	perror(msg);
 	exit(EXIT_FAILURE);
 }
