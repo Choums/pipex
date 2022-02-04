@@ -6,7 +6,7 @@
 /*   By: chaidel <chaidel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 17:24:10 by chaidel           #+#    #+#             */
-/*   Updated: 2022/02/04 11:03:24 by chaidel          ###   ########.fr       */
+/*   Updated: 2022/02/04 14:36:54 by chaidel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ void	ft_fst_process(int in_fd, int *pipefd, char *command, char **envp)
 
 	cmd = ft_split(command, ' ');
 	path = ft_get_path(cmd[0], envp);
-	if (!path)
-		ft_err("Command not found");
+	// if (!path)
+	// 	ft_err("Command not found");
 	dup2(in_fd, STDIN_FILENO);
 	dup2(pipefd[1], STDOUT_FILENO);
 	close(pipefd[0]);
