@@ -38,17 +38,21 @@ char	*ft_get_path(char *cmd, char **envp)
 	i = 0;
 	while (split[i])
 	{
-		split[i] = ft_strjoin(split[i], "/");
-		split[i] = ft_strjoin(split[i], cmd);
+		dir = ft_strjoin("/", cmd);
+		path = ft_strjoin(split[i], dir);
+		free(dir);
+		if (access(path, F_OK) == 0)
+		{
+			ft_double_free(split);
+			return (path);
+		}
+		free(path);
 		i++;
 	}
-	i = 0;
-	while (access(split[i], F_OK) < 0)
-		i++;
-	path = split[i];
 	ft_double_free(split);
-	return (path);
+	return (NULL);
 }
+
 
 void	ft_double_free(char **tab)
 {

@@ -19,12 +19,12 @@ void	ft_fst_process(int in_fd, int *pipefd, char *command, char **envp)
 
 	cmd = ft_split(command, ' ');
 	path = ft_get_path(cmd[0], envp);
-	// if (!path)
-	// 	ft_err("Command not found");
+	if (!path)
+		ft_err(cmd[0]);
 	dup2(in_fd, STDIN_FILENO);
 	dup2(pipefd[1], STDOUT_FILENO);
 	close(pipefd[0]);
-	if (execve(path, cmd, envp) < 0)
+	if (execve(path, cmd, NULL) < 0)
 		ft_err(cmd[0]);
 	free(path);
 	ft_double_free(cmd);
@@ -40,11 +40,11 @@ void	ft_snd_process(int out_fd, int *pipefd, char *command, char **envp)
 	cmd = ft_split(command, ' ');
 	path = ft_get_path(cmd[0], envp);
 	if (!path)
-		ft_err("Command not found");
+		ft_err(cmd[0]);
 	dup2(out_fd, STDOUT_FILENO);
 	dup2(pipefd[0], STDIN_FILENO);
 	close(pipefd[1]);
-	if (execve(path, cmd, envp) < 0)
+	if (execve(path, cmd, NULL) < 0)
 		ft_err(cmd[0]);
 	free(path);
 	ft_double_free(cmd);

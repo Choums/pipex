@@ -20,7 +20,7 @@ void	ft_process(char *command, char **envp)
 	cmd = ft_split(command, ' ');
 	path = ft_get_path(cmd[0], envp);
 	if (!path)
-		ft_err("Command not found");
+		ft_err(cmd[0]);
 	if (execve(path, cmd, envp) < 0)
 		ft_err(cmd[0]);
 	ft_double_free(cmd);
@@ -77,5 +77,5 @@ int	main(int ac, char **av, char **envp)
 	}
 	else
 		ft_err("Invalid number of arguments");
-	exit(EXIT_FAILURE);
+	exit(EXIT_SUCCESS);
 }

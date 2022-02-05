@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "libft.h"
-
+#include <stdio.h>
 static	char	**ft_free_tab(char **split, size_t i)
 {
 	while (split[i])
@@ -65,17 +65,18 @@ char	**ft_split(char const *s, char sep)
 	word_len = 0;
 	tmp_s = (char *)s;
 	num = ft_count_words(tmp_s, sep);
-	split = ft_calloc(num + 1, sizeof(char *));
+	split = malloc(sizeof(char *) * (num + 1));
 	if (!split)
 		return (NULL);
 	split[num] = NULL;
 	while (i < num)
 	{
 		ft_get_to_next_word(&tmp_s, sep, &word_len);
-		split[i] = (char *)ft_calloc(word_len + 1, sizeof(char));
+		split[i] = (char *)malloc(sizeof(char) * (word_len + 1));
 		if (!split[i])
 			return (ft_free_tab(split, i));
-		ft_memcpy(split[i++], tmp_s, word_len);
+		ft_strlcpy(split[i], tmp_s, word_len + 1);
+		i++;
 	}
 	return (split);
 }

@@ -34,6 +34,8 @@ void	ft_here_doc(char **av)
 
 	if (pipe(fd) == -1)
 		ft_err("Pipe");
+	line = "\0";
+	new_line = line;
 	end = av[2];
 	end = ft_strjoin(end, "\n");
 	while (ft_strcmp(line, end) != 0)
