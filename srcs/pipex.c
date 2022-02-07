@@ -20,7 +20,7 @@ void	ft_fst_process(int in_fd, int *pipefd, char *command, char **envp)
 	cmd = ft_split(command, ' ');
 	path = ft_get_path(cmd[0], envp);
 	if (!path)
-		ft_err(cmd[0]);
+		ft_err_cmd(cmd[0], path, cmd);
 	dup2(in_fd, STDIN_FILENO);
 	dup2(pipefd[1], STDOUT_FILENO);
 	close(pipefd[0]);
@@ -40,7 +40,7 @@ void	ft_snd_process(int out_fd, int *pipefd, char *command, char **envp)
 	cmd = ft_split(command, ' ');
 	path = ft_get_path(cmd[0], envp);
 	if (!path)
-		ft_err(cmd[0]);
+		ft_err_cmd(cmd[0], path, cmd);
 	dup2(out_fd, STDOUT_FILENO);
 	dup2(pipefd[0], STDIN_FILENO);
 	close(pipefd[1]);

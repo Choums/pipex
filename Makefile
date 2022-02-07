@@ -25,9 +25,12 @@ ${NAME}:		${OBJS}
 
 all:			${NAME}
 
-bonus:			${OBJS_BONUS}
+bonus:			${NAME_BONUS}
+
+${NAME_BONUS}:	${OBJS_BONUS}
 				${MAKE} -C ./libft
 				${CC} ${CFLAGS} ${OBJS_BONUS} ${LIB} -o ${NAME}
+
 clean:
 				${RM} ${OBJS} ${OBJS_BONUS}
 				${MAKE} clean -C ./libft

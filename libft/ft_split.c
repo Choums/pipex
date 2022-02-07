@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdio.h>
+
 static	char	**ft_free_tab(char **split, size_t i)
 {
 	while (split[i])
@@ -65,7 +65,7 @@ char	**ft_split(char const *s, char sep)
 	word_len = 0;
 	tmp_s = (char *)s;
 	num = ft_count_words(tmp_s, sep);
-	split = malloc(sizeof(char *) * (num + 1));
+	split = (char **)malloc(sizeof(char *) * (num + 1));
 	if (!split)
 		return (NULL);
 	split[num] = NULL;

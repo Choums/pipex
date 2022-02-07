@@ -74,3 +74,11 @@ void	ft_err(char *msg)
 	perror(msg);
 	exit(EXIT_FAILURE);
 }
+
+void	ft_err_cmd(char *msg, char *path, char **cmd)
+{
+	perror(msg);
+	free(path);
+	ft_double_free(cmd);
+	exit(EXIT_FAILURE);
+}
