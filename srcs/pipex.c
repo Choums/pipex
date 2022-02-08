@@ -18,17 +18,22 @@ void	ft_fst_process(int in_fd, int *pipefd, char *command, char **envp)
 	char	*path;
 
 	cmd = ft_split(command, ' ');
+	if (!cmd[0])
+	{
+		ft_double_free(cmd);
+		exit(EXIT_FAILURE);
+	}
 	path = ft_get_path(cmd[0], envp);
 	if (!path)
 		ft_err_cmd(cmd[0], path, cmd);
 	dup2(in_fd, STDIN_FILENO);
 	dup2(pipefd[1], STDOUT_FILENO);
 	close(pipefd[0]);
+	close(pipefd[1]);
 	if (execve(path, cmd, NULL) < 0)
-		ft_err(cmd[0]);
+		ft_err_cmd(cmd[0], path, cmd);
 	free(path);
 	ft_double_free(cmd);
-	close(pipefd[1]);
 	exit(EXIT_SUCCESS);
 }
 
@@ -38,17 +43,22 @@ void	ft_snd_process(int out_fd, int *pipefd, char *command, char **envp)
 	char	*path;
 
 	cmd = ft_split(command, ' ');
+		if (!cmd[0])
+	{
+		ft_double_free(cmd);
+		exit(EXIT_FAILURE);
+	}
 	path = ft_get_path(cmd[0], envp);
 	if (!path)
 		ft_err_cmd(cmd[0], path, cmd);
 	dup2(out_fd, STDOUT_FILENO);
 	dup2(pipefd[0], STDIN_FILENO);
 	close(pipefd[1]);
+	close(pipefd[0]);
 	if (execve(path, cmd, NULL) < 0)
-		ft_err(cmd[0]);
+		ft_err_cmd(cmd[0], path, cmd);
 	free(path);
 	ft_double_free(cmd);
-	close(pipefd[0]);
 	exit(EXIT_SUCCESS);
 }
 
@@ -82,11 +92,13 @@ int	main(int ac, char **av, char **envp)
 	int	out_fd;
 
 	in_fd = open(av[1], O_RDONLY);
+	if (in_fd < 0)
+		ft_err("Open");
 	out_fd = open(av[4], O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	if (in_fd < 0 || out_fd < 0)
+	if (out_fd < 0)
 		ft_err("Open");
 	if (ac != 5)
-		exit(EXIT_FAILURE);
+		ft_err("Invalid number of arguments");
 	ft_pipex(in_fd, out_fd, av, envp);
 	close(in_fd);
 	close(out_fd);

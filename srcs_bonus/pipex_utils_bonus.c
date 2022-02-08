@@ -90,7 +90,7 @@ void	ft_double_free(char **tab)
 	i = 0;
 	while (tab[i])
 		i++;
-	while (tab[i])
+	while (i)
 	{
 		free(tab[i]);
 		i--;

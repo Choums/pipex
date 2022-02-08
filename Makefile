@@ -11,25 +11,25 @@ NAME		=	pipex
 
 LIB			=	./libft/libft.a
 
+HEADER		=	-I ./includes/pipex.h
+
+HEADER_B	=	-I ./includes/pipex_bonus.h
+
 CC			=	cc
 
 CFLAGS		=	-Wall -Wextra -Werror
 
 RM			=	rm -f
 
-.c.o:			${CC} ${CFLAGS} -c $< -o ${<:.c=.o}
-
 ${NAME}:		${OBJS}
 				${MAKE} -C ./libft
-				${CC} ${CFLAGS} ${OBJS} ${LIB} -o ${NAME}
+				${CC} ${CFLAGS} ${OBJS} ${LIB} ${HEADER} -o ${NAME}
 
 all:			${NAME}
 
-bonus:			${NAME_BONUS}
-
-${NAME_BONUS}:	${OBJS_BONUS}
+bonus:			${OBJS_BONUS}
 				${MAKE} -C ./libft
-				${CC} ${CFLAGS} ${OBJS_BONUS} ${LIB} -o ${NAME}
+				${CC} ${CFLAGS} ${OBJS_BONUS} ${LIB} ${HEADER_B} -o ${NAME}
 
 clean:
 				${RM} ${OBJS} ${OBJS_BONUS}

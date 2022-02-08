@@ -36,7 +36,7 @@ char	*ft_get_path(char *cmd, char **envp)
 	split = ft_split(dir, ':');
 	free(dir);
 	i = 0;
-	while (split[i])
+	while (split[i++])
 	{
 		dir = ft_strjoin("/", cmd);
 		path = ft_strjoin(split[i], dir);
@@ -47,12 +47,10 @@ char	*ft_get_path(char *cmd, char **envp)
 			return (path);
 		}
 		free(path);
-		i++;
 	}
 	ft_double_free(split);
 	return (NULL);
 }
-
 
 void	ft_double_free(char **tab)
 {
@@ -61,7 +59,7 @@ void	ft_double_free(char **tab)
 	i = 0;
 	while (tab[i])
 		i++;
-	while (tab[i])
+	while (i)
 	{
 		free(tab[i]);
 		i--;

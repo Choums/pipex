@@ -14,7 +14,7 @@
 
 static	char	**ft_free_tab(char **split, size_t i)
 {
-	while (split[i])
+	while (i)
 	{
 		free(split[i]);
 		i--;
