@@ -6,7 +6,7 @@
 /*   By: chaidel <chaidel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/27 17:13:30 by chaidel           #+#    #+#             */
-/*   Updated: 2022/02/09 11:29:13 by chaidel          ###   ########.fr       */
+/*   Updated: 2022/02/09 11:56:13 by chaidel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,6 @@ void	ft_process(char *command, char **envp)
 		ft_err_cmd(cmd[0], path, cmd);
 	if (execve(path, cmd, envp) < 0)
 		ft_err_cmd(cmd[0], path, cmd);
-	ft_double_free(cmd);
-	free(path);
-	exit(EXIT_SUCCESS);
 }
 
 void	ft_case_parent(pid_t child, t_data *pip)
