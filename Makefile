@@ -9,11 +9,9 @@ OBJS_BONUS	=	${SRCS_BONUS:.c=.o}
 
 NAME		=	pipex
 
+BONUS		=	${NAME}
+
 LIB			=	./libft/libft.a
-
-HEADER		=	-I ./includes/pipex.h
-
-HEADER_B	=	-I ./includes/pipex_bonus.h
 
 CC			=	clang
 
@@ -23,13 +21,15 @@ RM			=	rm -f
 
 ${NAME}:		${OBJS}
 				${MAKE} -C ./libft
-				${CC} ${CFLAGS} ${OBJS} ${LIB} ${HEADER} -o ${NAME}
+				${CC} ${CFLAGS} ${OBJS} ${LIB} -o ${NAME}
 
 all:			${NAME}
 
-bonus:			${OBJS_BONUS}
+bonus:			${BONUS}
+
+${BONUS}:		${OBJS_BONUS}
 				${MAKE} -C ./libft
-				${CC} ${CFLAGS} ${OBJS_BONUS} ${LIB} ${HEADER_B} -o ${NAME}
+				${CC} ${CFLAGS} ${OBJS_BONUS} ${LIB} -o ${BONUS}
 
 clean:
 				${RM} ${OBJS} ${OBJS_BONUS}
