@@ -15,9 +15,9 @@ HEADER		=	-I ./includes/pipex.h
 
 HEADER_B	=	-I ./includes/pipex_bonus.h
 
-CC			=	cc
+CC			=	clang
 
-CFLAGS		=	-Wall -Wextra -Werror
+CFLAGS		=	-Wall -Wextra -Werror -fsanitize=address -g
 
 RM			=	rm -f
 

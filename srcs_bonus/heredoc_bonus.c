@@ -6,7 +6,7 @@
 /*   By: chaidel <chaidel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/27 18:59:55 by chaidel           #+#    #+#             */
-/*   Updated: 2022/02/04 09:59:03 by chaidel          ###   ########.fr       */
+/*   Updated: 2022/02/09 11:25:20 by chaidel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,17 @@ void	ft_close_pipe(t_data *pip)
 {
 	close(pip->pipefd[0]);
 	close(pip->pipefd[1]);
+}
+
+void	ft_err_cmd(char *msg, char *path, char **cmd)
+{
+	char	*err;
+
+	err = ft_strjoin("command not found: ", msg);
+	ft_putendl_fd(err, STDERR_FILENO);
+	free(path);
+	ft_double_free(cmd);
+	exit(EXIT_FAILURE);
 }
 
 /*
@@ -42,8 +53,7 @@ void	ft_here_doc(char **av)
 	{
 		ft_display_here(av);
 		line = get_next_line(STDIN_FILENO);
-		if (ft_strcmp(line, end))
-			new_line = ft_join(new_line, line);
+		new_line = ft_join(new_line, line);
 	}
 	free(line);
 	if (write(fd[1], new_line, ft_strlen(new_line)) == -1)

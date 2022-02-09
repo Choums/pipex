@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   split.c                                            :+:      :+:    :+:   */
+/*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chaidel <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: chaidel <chaidel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/26 15:25:07 by chaidel           #+#    #+#             */
-/*   Updated: 2021/11/29 19:18:58 by chaidel          ###   ########.fr       */
+/*   Updated: 2022/02/09 11:15:51 by chaidel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,7 @@ char	**ft_split(char const *s, char sep)
 		split[i] = (char *)malloc(sizeof(char) * (word_len + 1));
 		if (!split[i])
 			return (ft_free_tab(split, i));
-		ft_strlcpy(split[i], tmp_s, word_len + 1);
-		i++;
+		ft_strlcpy(split[i++], tmp_s, word_len + 1);
 	}
 	return (split);
 }

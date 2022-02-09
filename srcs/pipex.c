@@ -6,7 +6,7 @@
 /*   By: chaidel <chaidel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 17:24:10 by chaidel           #+#    #+#             */
-/*   Updated: 2022/02/04 14:36:54 by chaidel          ###   ########.fr       */
+/*   Updated: 2022/02/09 11:27:00 by chaidel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	ft_fst_process(int in_fd, int *pipefd, char *command, char **envp)
 	if (!cmd[0])
 	{
 		ft_double_free(cmd);
+		perror("");
 		exit(EXIT_FAILURE);
 	}
 	path = ft_get_path(cmd[0], envp);
@@ -32,9 +33,6 @@ void	ft_fst_process(int in_fd, int *pipefd, char *command, char **envp)
 	close(pipefd[1]);
 	if (execve(path, cmd, NULL) < 0)
 		ft_err_cmd(cmd[0], path, cmd);
-	free(path);
-	ft_double_free(cmd);
-	exit(EXIT_SUCCESS);
 }
 
 void	ft_snd_process(int out_fd, int *pipefd, char *command, char **envp)
@@ -43,7 +41,7 @@ void	ft_snd_process(int out_fd, int *pipefd, char *command, char **envp)
 	char	*path;
 
 	cmd = ft_split(command, ' ');
-		if (!cmd[0])
+	if (!cmd[0])
 	{
 		ft_double_free(cmd);
 		exit(EXIT_FAILURE);
@@ -57,9 +55,6 @@ void	ft_snd_process(int out_fd, int *pipefd, char *command, char **envp)
 	close(pipefd[0]);
 	if (execve(path, cmd, NULL) < 0)
 		ft_err_cmd(cmd[0], path, cmd);
-	free(path);
-	ft_double_free(cmd);
-	exit(EXIT_SUCCESS);
 }
 
 void	ft_pipex(int in_fd, int out_fd, char **av, char **envp)
@@ -98,7 +93,10 @@ int	main(int ac, char **av, char **envp)
 	if (out_fd < 0)
 		ft_err("Open");
 	if (ac != 5)
-		ft_err("Invalid number of arguments");
+	{
+		ft_putendl_fd("Invalid number of arguments", STDERR_FILENO);
+		exit(EXIT_FAILURE);
+	}
 	ft_pipex(in_fd, out_fd, av, envp);
 	close(in_fd);
 	close(out_fd);

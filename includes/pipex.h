@@ -22,6 +22,7 @@
 # include "../libft/libft.h"
 
 char	*ft_get_path(char *cmd, char **envp);
+char	**ft_get_env(char **envp);
 void	ft_double_free(char **tab);
 void	ft_err(char *msg);
 void	ft_err_cmd(char *msg, char *path, char **cmd);

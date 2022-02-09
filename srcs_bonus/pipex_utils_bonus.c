@@ -6,11 +6,27 @@
 /*   By: chaidel <chaidel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/27 18:44:09 by chaidel           #+#    #+#             */
-/*   Updated: 2022/02/04 14:32:07 by chaidel          ###   ########.fr       */
+/*   Updated: 2022/02/09 11:16:21 by chaidel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/pipex_bonus.h"
+
+char	**ft_get_env(char **envp)
+{
+	char	**split;
+	char	*dir;
+	size_t	i;
+
+	i = 0;
+	while (!ft_strnstr(envp[i], "PATH", 4))
+		i++;
+	dir = envp[i];
+	dir = ft_substr(dir, 5, ft_strlen(dir) - 6);
+	split = ft_split(dir, ':');
+	free(dir);
+	return (split);
+}
 
 /*
 	Get value of PATH variable and check in which the cmd's file is in
@@ -27,13 +43,7 @@ char	*ft_get_path(char *cmd, char **envp)
 	char	**split;
 	size_t	i;
 
-	i = 0;
-	while (!ft_strnstr(envp[i], "PATH", 4))
-		i++;
-	dir = envp[i];
-	dir = ft_substr(dir, 5, ft_strlen(dir) - 6);
-	split = ft_split(dir, ':');
-	free(dir);
+	split = ft_get_env(envp);
 	i = 0;
 	while (split[i])
 	{

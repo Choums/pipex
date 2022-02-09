@@ -6,7 +6,7 @@
 /*   By: chaidel <chaidel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/27 17:13:30 by chaidel           #+#    #+#             */
-/*   Updated: 2022/02/04 10:27:54 by chaidel          ###   ########.fr       */
+/*   Updated: 2022/02/09 11:29:13 by chaidel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,17 @@ void	ft_process(char *command, char **envp)
 	char	*path;
 
 	cmd = ft_split(command, ' ');
+	if (!cmd[0])
+	{
+		ft_double_free(cmd);
+		perror("");
+		exit(EXIT_FAILURE);
+	}
 	path = ft_get_path(cmd[0], envp);
 	if (!path)
-		ft_err(cmd[0]);
+		ft_err_cmd(cmd[0], path, cmd);
 	if (execve(path, cmd, envp) < 0)
-		ft_err(cmd[0]);
+		ft_err_cmd(cmd[0], path, cmd);
 	ft_double_free(cmd);
 	free(path);
 	exit(EXIT_SUCCESS);
@@ -60,7 +66,7 @@ void	ft_pipex(t_data *pip, char **av, char **envp)
 			ft_case_parent(child, pip);
 	}
 	if (dup2(pip->out_fd, STDOUT_FILENO) == -1)
-		ft_err("Dup2 3");
+		ft_err("Dup2");
 	ft_process(av[n_arg], envp);
 }
 
@@ -76,6 +82,9 @@ int	main(int ac, char **av, char **envp)
 		close(pip.out_fd);
 	}
 	else
-		ft_err("Invalid number of arguments");
+	{
+		ft_putendl_fd("Invalid number of arguments", STDERR_FILENO);
+		exit(EXIT_FAILURE);
+	}
 	exit(EXIT_SUCCESS);
 }
