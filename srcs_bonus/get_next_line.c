@@ -6,11 +6,11 @@
 /*   By: chaidel <chaidel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/29 17:12:28 by chaidel           #+#    #+#             */
-/*   Updated: 2022/02/01 15:25:19 by chaidel          ###   ########.fr       */
+/*   Updated: 2022/02/11 15:53:20 by chaidel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "../includes/get_next_line.h"
 
 char	*ft_extract(int fd, char *rest)
 {

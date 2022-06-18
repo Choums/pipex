@@ -1,44 +1,60 @@
-SRCS		=	srcs/pipex.c srcs/pipex_utils.c
-
-SRCS_BONUS	=	srcs_bonus/pipex_bonus.c srcs_bonus/pipex_utils_bonus.c srcs_bonus/heredoc_bonus.c \
-				srcs_bonus/get_next_line/get_next_line.c srcs_bonus/get_next_line/get_next_line_utils.c
-
-OBJS		=	${SRCS:.c=.o}
-
-OBJS_BONUS	=	${SRCS_BONUS:.c=.o}
-
 NAME		=	pipex
 
-LIB			=	./libft/libft.a
+SRCS		=	pipex.c\
+				pipex_utils.c\
 
-HEADER		=	-I ./includes/pipex.h
+#SRCS_BONUS	=	pipex_bonus.c\
+				pipex_utils_bonus.c\
+				heredoc_bonus.c \
+				get_next_line.c\
+				get_next_line_utils.c
 
-HEADER_B	=	-I ./includes/pipex_bonus.h
+OBJ_DIR		=	obj
+#SRCS_DIR	=	srcs_bonus
+INC			=	./includes
+SRCS_DIR	=	./srcs
+OBJ		=	${addprefix ${OBJ_DIR}/,${SRCS:.c=.o}}
+
+#OBJS_BONUS	=	${addprefix ${OBJ_DIR}/,${SRCS_BONUS:.c=.o}}
+#DPD			=	${addprefix ${OBJ_DIR}/,${SRCS_BONUS:.c=.d}}
+
+
+FT			=	./libft/
+FT_LIB		=	$(addprefix $(FT),libft.a)
+FT_INC		=	-I ./libft
 
 CC			=	clang
 
-CFLAGS		=	-Wall -Wextra -Werror -fsanitize=address -g
+CFLAGS		=	-Wall -Wextra -Werror
 
-RM			=	rm -f
+RM			=	rm -rf
 
-${NAME}:		${OBJS}
-				${MAKE} -C ./libft
-				${CC} ${CFLAGS} ${OBJS} ${LIB} ${HEADER} -o ${NAME}
+$(FT_LIB):
+				make -C $(FT)
 
-all:			${NAME}
+all:			obj ${FT_LIB} ${NAME}
 
-bonus:			${OBJS_BONUS}
-				${MAKE} -C ./libft
-				${CC} ${CFLAGS} ${OBJS_BONUS} ${LIB} ${HEADER_B} -o ${NAME}
+obj:
+				mkdir -p $(OBJ_DIR)
+
+${NAME}:		${OBJ}
+				${CC} ${CFLAGS} ${OBJ} ${FT_LIB} -o ${NAME}
+
+
+#bonus:			${OBJS_BONUS}
+#				${MAKE} -C ./libft
+#				${CC} ${CFLAGS} -I ${INC} ${LIB} -o ${NAME} ${OBJS_BONUS}
+
+#si le .c est plus recent que son .o, on entre dans la règle
+${OBJ_DIR}/%.o:	${SRCS_DIR}/%.c
+				${CC} ${CFLAGS} $(FT_INC) -I ${INC} -o $@ -c $<
 
 clean:
-				${RM} ${OBJS} ${OBJS_BONUS}
-				${MAKE} clean -C ./libft
+				${RM} ${OBJ_DIR}
+				${MAKE} -C ${FT} clean
 
 fclean:			clean
 				${RM} ${NAME}
-				${MAKE} fclean -C ./libft
+				make -C $(FT) fclean
 
 re:				fclean all
-
-.PHONY:			all bonus clean fclean re

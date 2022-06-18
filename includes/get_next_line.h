@@ -6,7 +6,7 @@
 /*   By: chaidel <chaidel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 15:20:38 by chaidel           #+#    #+#             */
-/*   Updated: 2022/02/01 15:25:45 by chaidel          ###   ########.fr       */
+/*   Updated: 2022/02/11 16:29:29 by chaidel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <stdlib.h>
 # include <unistd.h>
+# include "../libft/libft.h"
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 42
 # endif

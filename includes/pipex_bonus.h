@@ -6,7 +6,7 @@
 /*   By: chaidel <chaidel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/27 17:11:16 by chaidel           #+#    #+#             */
-/*   Updated: 2022/02/09 11:15:10 by chaidel          ###   ########.fr       */
+/*   Updated: 2022/02/11 16:02:42 by chaidel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # include <sys/wait.h>
 # include <errno.h>
 # include "../libft/libft.h"
-# include "../srcs_bonus/get_next_line/get_next_line.h"
+# include "get_next_line.h"
 
 typedef struct s_data
 {
