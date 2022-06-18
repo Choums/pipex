@@ -13,7 +13,7 @@ OBJ_DIR		=	obj
 #SRCS_DIR	=	srcs_bonus
 INC			=	./includes
 SRCS_DIR	=	./srcs
-OBJ		=	${addprefix ${OBJ_DIR}/,${SRCS:.c=.o}}
+OBJ			=	${addprefix ${OBJ_DIR}/,${SRCS:.c=.o}}
 
 #OBJS_BONUS	=	${addprefix ${OBJ_DIR}/,${SRCS_BONUS:.c=.o}}
 #DPD			=	${addprefix ${OBJ_DIR}/,${SRCS_BONUS:.c=.d}}
@@ -29,13 +29,14 @@ CFLAGS		=	-Wall -Wextra -Werror
 
 RM			=	rm -rf
 
-$(FT_LIB):
-				make -C $(FT)
 
 all:			obj ${FT_LIB} ${NAME}
 
+${FT_LIB}:
+				${MAKE} -C ${FT}
+
 obj:
-				mkdir -p $(OBJ_DIR)
+				mkdir -p ${OBJ_DIR}
 
 ${NAME}:		${OBJ}
 				${CC} ${CFLAGS} ${OBJ} ${FT_LIB} -o ${NAME}
@@ -47,7 +48,7 @@ ${NAME}:		${OBJ}
 
 #si le .c est plus recent que son .o, on entre dans la règle
 ${OBJ_DIR}/%.o:	${SRCS_DIR}/%.c
-				${CC} ${CFLAGS} $(FT_INC) -I ${INC} -o $@ -c $<
+				${CC} ${CFLAGS} ${FT_INC} -I ${INC} -o $@ -c $<
 
 clean:
 				${RM} ${OBJ_DIR}

@@ -6,7 +6,7 @@
 /*   By: chaidel <chaidel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 17:24:10 by chaidel           #+#    #+#             */
-/*   Updated: 2022/03/24 17:12:06 by chaidel          ###   ########.fr       */
+/*   Updated: 2022/06/18 15:33:55 by chaidel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	ft_fst_process(char *file, int *pipefd, char *command, char **envp)
 	if (!cmd[0])
 	{
 		ft_double_free(cmd);
-		perror("");
+		ft_putendl_fd("command not found: ", STDERR_FILENO);
 		exit(EXIT_FAILURE);
 	}
 	path = ft_get_path(cmd[0], envp);
@@ -34,35 +34,37 @@ void	ft_fst_process(char *file, int *pipefd, char *command, char **envp)
 	dup2(in_fd, STDIN_FILENO);
 	dup2(pipefd[1], STDOUT_FILENO);
 	close(pipefd[0]);
-	close(pipefd[1]);
 	if (execve(path, cmd, NULL) < 0)
 		ft_err_cmd(cmd[0], path, cmd);
 }
 
-void	ft_snd_process(int out_fd, int *pipefd, char *command, char **envp)
+void	ft_snd_process(char *file, int *pipefd, char *command, char **envp)
 {
 	char	**cmd;
 	char	*path;
+	int		out_fd;
 
 	cmd = ft_split(command, ' ');
 	if (!cmd[0])
 	{
 		ft_double_free(cmd);
-		perror("");
+		ft_putendl_fd("command not found", STDERR_FILENO);
 		exit(EXIT_FAILURE);
 	}
 	path = ft_get_path(cmd[0], envp);
 	if (!path)
 		ft_err_cmd(cmd[0], path, cmd);
+	out_fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (out_fd < 0)
+		ft_err("Open");
 	dup2(out_fd, STDOUT_FILENO);
 	dup2(pipefd[0], STDIN_FILENO);
 	close(pipefd[1]);
-	close(pipefd[0]);
 	if (execve(path, cmd, NULL) < 0)
 		ft_err_cmd(cmd[0], path, cmd);
 }
 
-void	ft_pipex(int out_fd, char **av, char **envp)
+void	ft_pipex(char **av, char **envp)
 {
 	int		pipefd[2];
 	pid_t	fst_child;
@@ -79,7 +81,7 @@ void	ft_pipex(int out_fd, char **av, char **envp)
 	if (snd_child < 0)
 		ft_err("Fork");
 	else if (snd_child == 0)
-		ft_snd_process(out_fd, pipefd, av[3], envp);
+		ft_snd_process(av[4], pipefd, av[3], envp);
 	close(pipefd[1]);
 	close(pipefd[0]);
 	waitpid(fst_child, NULL, 0);
@@ -88,21 +90,16 @@ void	ft_pipex(int out_fd, char **av, char **envp)
 
 int	main(int ac, char **av, char **envp)
 {
-	int	out_fd;
-
 	if (!*envp)
 	{
-		perror("Empty envp");
+		ft_putendl_fd("Empty envp", STDERR_FILENO);
 		exit(EXIT_FAILURE);
 	}
-	out_fd = open(av[4], O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	if (out_fd < 0)
-		ft_err("Open");
 	if (ac != 5)
 	{
 		ft_putendl_fd("Invalid number of arguments", STDERR_FILENO);
 		exit(EXIT_FAILURE);
 	}
-	ft_pipex(out_fd, av, envp);
+	ft_pipex(av, envp);
 	exit(EXIT_SUCCESS);
 }
