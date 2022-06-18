@@ -13,7 +13,7 @@ OBJ_DIR		=	obj
 #SRCS_DIR	=	srcs_bonus
 INC			=	./includes
 SRCS_DIR	=	./srcs
-OBJ		=	${addprefix ${OBJ_DIR}/,${SRCS:.c=.o}}
+OBJ			=	${addprefix ${OBJ_DIR}/,${SRCS:.c=.o}}
 
 #OBJS_BONUS	=	${addprefix ${OBJ_DIR}/,${SRCS_BONUS:.c=.o}}
 #DPD			=	${addprefix ${OBJ_DIR}/,${SRCS_BONUS:.c=.d}}
@@ -23,7 +23,7 @@ FT			=	./libft/
 FT_LIB		=	$(addprefix $(FT),libft.a)
 FT_INC		=	-I ./libft
 
-CC			=	clang
+all:			obj ${NAME}
 
 CFLAGS		=	-Wall -Wextra -Werror
 

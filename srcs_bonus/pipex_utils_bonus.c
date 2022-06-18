@@ -6,7 +6,7 @@
 /*   By: chaidel <chaidel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/27 18:44:09 by chaidel           #+#    #+#             */
-/*   Updated: 2022/02/09 11:16:21 by chaidel          ###   ########.fr       */
+/*   Updated: 2022/03/24 17:21:21 by chaidel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,10 @@ char	**ft_get_env(char **envp)
 	size_t	i;
 
 	i = 0;
-	while (!ft_strnstr(envp[i], "PATH", 4))
+	while (envp[i] && !ft_strnstr(envp[i], "PATH", 4))
 		i++;
+	if (!envp[i])
+		ft_err("PATH variable not found");
 	dir = envp[i];
 	dir = ft_substr(dir, 5, ft_strlen(dir) - 6);
 	split = ft_split(dir, ':');
@@ -88,7 +90,7 @@ int	ft_open_mode(t_data *pip, char **av)
 		if (pip->in_fd < 0 || pip->out_fd < 0)
 			ft_err("Open");
 		if (dup2(pip->in_fd, STDIN_FILENO) == -1)
-			ft_err("Dup2 1");
+			ft_err("Dup2");
 		return (1);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: chaidel <chaidel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/27 17:13:30 by chaidel           #+#    #+#             */
-/*   Updated: 2022/02/09 11:56:13 by chaidel          ###   ########.fr       */
+/*   Updated: 2022/03/24 17:25:10 by chaidel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,11 @@ int	main(int ac, char **av, char **envp)
 {
 	t_data	pip;
 
+	if (!*envp)
+	{
+		perror("Empty envp");
+		exit(EXIT_FAILURE);
+	}
 	if (ac >= 5)
 	{
 		pip.ac = ac;

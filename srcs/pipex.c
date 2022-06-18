@@ -6,16 +6,17 @@
 /*   By: chaidel <chaidel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 17:24:10 by chaidel           #+#    #+#             */
-/*   Updated: 2022/02/09 11:27:00 by chaidel          ###   ########.fr       */
+/*   Updated: 2022/03/24 17:12:06 by chaidel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/pipex.h"
 
-void	ft_fst_process(int in_fd, int *pipefd, char *command, char **envp)
+void	ft_fst_process(char *file, int *pipefd, char *command, char **envp)
 {
 	char	**cmd;
 	char	*path;
+	int		in_fd;
 
 	cmd = ft_split(command, ' ');
 	if (!cmd[0])
@@ -27,6 +28,9 @@ void	ft_fst_process(int in_fd, int *pipefd, char *command, char **envp)
 	path = ft_get_path(cmd[0], envp);
 	if (!path)
 		ft_err_cmd(cmd[0], path, cmd);
+	in_fd = open(file, O_RDONLY);
+	if (in_fd < 0)
+		ft_err("Open");
 	dup2(in_fd, STDIN_FILENO);
 	dup2(pipefd[1], STDOUT_FILENO);
 	close(pipefd[0]);
@@ -44,6 +48,7 @@ void	ft_snd_process(int out_fd, int *pipefd, char *command, char **envp)
 	if (!cmd[0])
 	{
 		ft_double_free(cmd);
+		perror("");
 		exit(EXIT_FAILURE);
 	}
 	path = ft_get_path(cmd[0], envp);
@@ -57,7 +62,7 @@ void	ft_snd_process(int out_fd, int *pipefd, char *command, char **envp)
 		ft_err_cmd(cmd[0], path, cmd);
 }
 
-void	ft_pipex(int in_fd, int out_fd, char **av, char **envp)
+void	ft_pipex(int out_fd, char **av, char **envp)
 {
 	int		pipefd[2];
 	pid_t	fst_child;
@@ -69,7 +74,7 @@ void	ft_pipex(int in_fd, int out_fd, char **av, char **envp)
 	if (fst_child < 0)
 		ft_err("Fork");
 	else if (fst_child == 0)
-		ft_fst_process(in_fd, pipefd, av[2], envp);
+		ft_fst_process(av[1], pipefd, av[2], envp);
 	snd_child = fork();
 	if (snd_child < 0)
 		ft_err("Fork");
@@ -83,12 +88,13 @@ void	ft_pipex(int in_fd, int out_fd, char **av, char **envp)
 
 int	main(int ac, char **av, char **envp)
 {
-	int	in_fd;
 	int	out_fd;
 
-	in_fd = open(av[1], O_RDONLY);
-	if (in_fd < 0)
-		ft_err("Open");
+	if (!*envp)
+	{
+		perror("Empty envp");
+		exit(EXIT_FAILURE);
+	}
 	out_fd = open(av[4], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (out_fd < 0)
 		ft_err("Open");
@@ -97,8 +103,6 @@ int	main(int ac, char **av, char **envp)
 		ft_putendl_fd("Invalid number of arguments", STDERR_FILENO);
 		exit(EXIT_FAILURE);
 	}
-	ft_pipex(in_fd, out_fd, av, envp);
-	close(in_fd);
-	close(out_fd);
+	ft_pipex(out_fd, av, envp);
 	exit(EXIT_SUCCESS);
 }

@@ -15,11 +15,10 @@
 
 # include <stdlib.h>
 # include <stdio.h>
+# include <unistd.h>
 # include <string.h>
 # include <fcntl.h>
 # include <sys/wait.h>
-# include <errno.h>
-# include "../libft/libft.h"
 
 char	*ft_get_path(char *cmd, char **envp);
 char	**ft_get_env(char **envp);
@@ -27,8 +26,19 @@ void	ft_double_free(char **tab);
 void	ft_err(char *msg);
 void	ft_err_cmd(char *msg, char *path, char **cmd);
 
-void	ft_pipex(int in_fd, int out_fd, char **av, char **envp);
-void	ft_fst_process(int in_fd, int *pipefd, char *command, char **envp);
+void	ft_pipex(int out_fd, char **av, char **envp);
+void	ft_fst_process(char *file, int *pipefd, char *command, char **envp);
 void	ft_snd_process(int out_fd, int *pipefd, char *command, char **envp);
+
+size_t	ft_strlen(const char *str);
+size_t	ft_putstr_fd(char *s, int fd);
+size_t	ft_putendl_fd(char *s, int fd);
+char	*ft_strcat(char *dest, const char *src);
+char	*ft_strjoin(char const *s1, char const *s2);
+char	*ft_strnstr(const char *str, const char *to_find, size_t len);
+char	*ft_substr(char const *s, unsigned int start, size_t len);
+char	**ft_split(char const *s, char sep);
+void	*ft_memcpy(void *dest, const void *src, size_t n);
+size_t	ft_strlcpy(char *dst, const char *src, size_t size);
 
 #endif
