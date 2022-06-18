@@ -6,7 +6,7 @@
 /*   By: chaidel <chaidel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 17:24:10 by chaidel           #+#    #+#             */
-/*   Updated: 2022/06/18 15:33:55 by chaidel          ###   ########.fr       */
+/*   Updated: 2022/06/18 15:54:50 by chaidel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,10 @@ void	ft_fst_process(char *file, int *pipefd, char *command, char **envp)
 	if (in_fd < 0)
 		ft_err("Open");
 	dup2(in_fd, STDIN_FILENO);
+	close(in_fd);
 	dup2(pipefd[1], STDOUT_FILENO);
 	close(pipefd[0]);
+	close(pipefd[1]);
 	if (execve(path, cmd, NULL) < 0)
 		ft_err_cmd(cmd[0], path, cmd);
 }
@@ -58,8 +60,10 @@ void	ft_snd_process(char *file, int *pipefd, char *command, char **envp)
 	if (out_fd < 0)
 		ft_err("Open");
 	dup2(out_fd, STDOUT_FILENO);
+	close(out_fd);
 	dup2(pipefd[0], STDIN_FILENO);
 	close(pipefd[1]);
+	close(pipefd[0]);
 	if (execve(path, cmd, NULL) < 0)
 		ft_err_cmd(cmd[0], path, cmd);
 }
