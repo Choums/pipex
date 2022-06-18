@@ -6,7 +6,7 @@
 /*   By: chaidel <chaidel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 17:24:05 by chaidel           #+#    #+#             */
-/*   Updated: 2022/02/09 11:30:34 by chaidel          ###   ########.fr       */
+/*   Updated: 2022/06/18 18:22:10 by chaidel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,10 @@ char	**ft_get_env(char **envp)
 	size_t	i;
 
 	i = 0;
-	while (!ft_strnstr(envp[i], "PATH", 4))
+	while (envp[i] && !ft_strnstr(envp[i], "PATH", 4))
 		i++;
+	if (!envp[i])
+		return (NULL);
 	dir = envp[i];
 	dir = ft_substr(dir, 5, ft_strlen(dir) - 6);
 	split = ft_split(dir, ':');
@@ -44,6 +46,8 @@ char	*ft_get_path(char *cmd, char **envp)
 	size_t	i;
 
 	split = ft_get_env(envp);
+	if (!split || !cmd)
+		return (NULL);
 	i = 0;
 	while (split[i])
 	{
