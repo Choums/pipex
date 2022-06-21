@@ -47,7 +47,7 @@ ${NAME}:		${OBJ}
 #				${CC} ${CFLAGS} -I ${INC} ${LIB} -o ${NAME} ${OBJS_BONUS}
 
 #si le .c est plus recent que son .o, on entre dans la règle
-${OBJ_DIR}/%.o:	${SRCS_DIR}/%.c
+${OBJ_DIR}/%.o:	${SRCS_DIR}/%.c includes/pipex.h
 				${CC} ${CFLAGS} ${FT_INC} -I ${INC} -o $@ -c $<
 
 clean:
