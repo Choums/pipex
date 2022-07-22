@@ -6,7 +6,7 @@
 /*   By: chaidel <chaidel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 17:24:10 by chaidel           #+#    #+#             */
-/*   Updated: 2022/06/25 18:48:40 by chaidel          ###   ########.fr       */
+/*   Updated: 2022/07/22 14:25:30 by chaidel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,23 +20,23 @@ void	ft_fst_process(char *file, int *pipefd, char *command, char **envp)
 
 	in_fd = open(file, O_RDONLY);
 	if (in_fd < 0)
-		ft_err("Open");
+		ft_err(file);
 	cmd = ft_split(command, ' ');
 	if (!cmd[0])
 	{
 		ft_double_free(cmd);
-		ft_putstr_fd("command not found: ", STDERR_FILENO);
-		ft_putendl_fd(command, STDERR_FILENO);
+		ft_putstr_fd(command, STDERR_FILENO);
+		ft_putendl_fd(": command not found", STDERR_FILENO);
 		exit(EXIT_FAILURE);
 	}
-	path = ft_get_path(cmd[0], envp);
-	if (!path)
-		ft_err_cmd(cmd[0], path, cmd);
 	dup2(in_fd, STDIN_FILENO);
 	close(in_fd);
 	dup2(pipefd[1], STDOUT_FILENO);
-	close(pipefd[0]);
 	close(pipefd[1]);
+	close(pipefd[0]);
+	path = ft_get_path(cmd[0], envp);
+	if (!path)
+		ft_err_cmd(cmd[0], path, cmd);
 	if (execve(path, cmd, NULL) < 0)
 		ft_err_cmd(cmd[0], path, cmd);
 }
@@ -60,7 +60,7 @@ void	ft_snd_process(char *file, int *pipefd, char *command, char **envp)
 		ft_err_cmd(cmd[0], path, cmd);
 	out_fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (out_fd < 0)
-		ft_err("Open");
+		ft_err("file");
 	dup2(out_fd, STDOUT_FILENO);
 	close(out_fd);
 	dup2(pipefd[0], STDIN_FILENO);
@@ -77,15 +77,15 @@ void	ft_pipex(char **av, char **envp)
 	pid_t	snd_child;
 
 	if (pipe(pipefd) == -1)
-		ft_err("Pipe");
+		ft_err("pipe");
 	fst_child = fork();
 	if (fst_child < 0)
-		ft_err("Fork");
+		ft_err("fork");
 	else if (fst_child == 0)
 		ft_fst_process(av[1], pipefd, av[2], envp);
 	snd_child = fork();
 	if (snd_child < 0)
-		ft_err("Fork");
+		ft_err("fork");
 	else if (snd_child == 0)
 		ft_snd_process(av[4], pipefd, av[3], envp);
 	close(pipefd[1]);

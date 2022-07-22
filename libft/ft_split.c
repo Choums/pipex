@@ -6,7 +6,7 @@
 /*   By: chaidel <chaidel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/26 15:25:07 by chaidel           #+#    #+#             */
-/*   Updated: 2022/02/09 11:15:51 by chaidel          ###   ########.fr       */
+/*   Updated: 2022/07/22 14:09:03 by chaidel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static	char	**ft_free_tab(char **split, size_t i)
 {
-	while (i)
+	while (i >= 0)
 	{
 		free(split[i]);
 		i--;

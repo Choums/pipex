@@ -6,7 +6,7 @@
 /*   By: chaidel <chaidel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 17:24:05 by chaidel           #+#    #+#             */
-/*   Updated: 2022/06/18 18:22:10 by chaidel          ###   ########.fr       */
+/*   Updated: 2022/07/22 14:21:59 by chaidel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,12 +68,12 @@ char	*ft_get_path(char *cmd, char **envp)
 
 void	ft_double_free(char **tab)
 {
-	size_t	i;
+	int	i;
 
 	i = 0;
 	while (tab[i])
 		i++;
-	while (i)
+	while (i >= 0)
 	{
 		free(tab[i]);
 		i--;
@@ -81,19 +81,20 @@ void	ft_double_free(char **tab)
 	free(tab);
 }
 
-void	ft_err(char *msg)
+void	ft_err(char *cmd)
 {
-	perror(msg);
-	exit(EXIT_FAILURE);
+	ft_putstr_fd(cmd, STDERR_FILENO);
+	ft_putstr_fd(": ", STDERR_FILENO);
+	ft_putendl_fd(strerror(errno), STDERR_FILENO);
+	exit(127);
 }
 
 void	ft_err_cmd(char *msg, char *path, char **cmd)
 {
-	char	*err;
-
-	err = ft_strjoin("command not found: ", msg);
-	ft_putendl_fd(err, STDERR_FILENO);
-	free(path);
+	ft_putstr_fd(msg, STDERR_FILENO);
+	ft_putstr_fd(": ", STDERR_FILENO);
+	ft_putendl_fd("command not found", STDERR_FILENO);
 	ft_double_free(cmd);
-	exit(EXIT_FAILURE);
+	free(path);
+	exit(127);
 }
